@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "142089123243",
+    "project_id": "melee-notes",
+    "storage_bucket": "melee-notes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:142089123243:android:09008015fef792f7fcceee",
+        "android_client_info": {
+          "package_name": "com.example.melee_notes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "142089123243-cce2togl1p6lrro9ppvm0orvdhrrq58f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQaaB7MPx67h1YM8ab1xpnGNNmYOjq8Nw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "142089123243-cce2togl1p6lrro9ppvm0orvdhrrq58f.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "142089123243-ck8v7v35eqnah66848v3k3b2d5poqkr4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.meleeNotes"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
