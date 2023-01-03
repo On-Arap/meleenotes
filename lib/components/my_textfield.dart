@@ -12,20 +12,22 @@ class MyTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
       child: TextField(
-          controller: controller,
-          obscureText: obscureText,
-          style: TextStyle(color: Colors.grey.shade300),
-          decoration: InputDecoration(
-              enabledBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey.shade500),
-              ),
-              fillColor: Colors.grey.shade900,
-              filled: true,
-              hintText: hintText,
-              hintStyle: TextStyle(color: Colors.grey.shade600))),
+        controller: controller,
+        obscureText: obscureText,
+        style: TextStyle(color: Colors.grey.shade300),
+        decoration: InputDecoration(
+          enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey.shade500),
+          ),
+          fillColor: Colors.grey.shade900,
+          filled: true,
+          hintText: hintText,
+          hintStyle: TextStyle(color: Colors.grey.shade600),
+        ),
+      ),
     );
   }
 }
