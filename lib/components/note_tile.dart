@@ -15,12 +15,20 @@ class NoteTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         decoration: BoxDecoration(
-          color: Colors.grey[400],
+          color: Colors.grey[800],
           borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade600,
+              spreadRadius: 1,
+              blurRadius: 15,
+              offset: const Offset(5, 5),
+            ),
+          ],
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -31,16 +39,16 @@ class NoteTile extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
-                    color: Colors.black,
+                  style: TextStyle(
+                    color: Colors.grey[100],
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
                   char,
-                  style: const TextStyle(
-                    color: Colors.black,
+                  style: TextStyle(
+                    color: Colors.grey[300],
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
@@ -50,7 +58,7 @@ class NoteTile extends StatelessWidget {
             const SizedBox(height: 10),
             Text(
               body,
-              style: TextStyle(color: Colors.grey[900], fontSize: 16),
+              style: TextStyle(color: Colors.grey[300], fontSize: 16),
             ),
           ],
         ),

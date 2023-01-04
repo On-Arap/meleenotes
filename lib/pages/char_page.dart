@@ -112,15 +112,18 @@ class _CharPageState extends State<CharPage> {
         backgroundColor: Colors.grey[900],
       ),
       backgroundColor: Colors.grey[500],
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.small(
         onPressed: () {
           return createNewNote();
         },
-        backgroundColor: Colors.grey[800],
+        backgroundColor: Colors.grey[700],
         child: const Icon(Icons.add),
       ),
       body: Center(
         child: ListView.builder(
+          shrinkWrap: false,
+          physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+          padding: const EdgeInsets.only(top: 10, bottom: 20),
           itemCount: notes.length,
           itemBuilder: (context, index) {
             return NoteTile(
