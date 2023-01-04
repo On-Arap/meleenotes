@@ -1,12 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import 'char_page.dart';
+import 'package:localstorage/localstorage.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
 
   final user = FirebaseAuth.instance.currentUser!;
+  final LocalStorage storage = LocalStorage('melee_notes');
   final chars = [
     'fox',
     'marth',
@@ -54,7 +55,7 @@ class HomePage extends StatelessWidget {
           )
         ],
       ),
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Colors.grey[500],
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10.0),
         child: Padding(
@@ -76,7 +77,7 @@ class HomePage extends StatelessWidget {
                         return GestureDetector(
                           onTap: () {
                             Navigator.push(context, MaterialPageRoute(builder: (context) {
-                              return CharPage(char: chars[index]);
+                              return CharPage(char: chars[index], local: storage);
                             }));
                           },
                           child: Container(

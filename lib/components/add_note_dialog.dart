@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:melee_notes/components/my_button.dart';
-
 import 'my_add_textfield.dart';
-import 'my_textfield.dart';
 
 class AddNoteDialog extends StatelessWidget {
-  final titleController = TextEditingController();
-  final bodyController = TextEditingController();
+  final titleController;
+  final bodyController;
 
-  AddNoteDialog({super.key});
+  VoidCallback onSave;
+  VoidCallback onCancel;
+
+  AddNoteDialog({
+    super.key,
+    required this.titleController,
+    required this.bodyController,
+    required this.onSave,
+    required this.onCancel,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,20 +32,15 @@ class AddNoteDialog extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 MaterialButton(
-                  onPressed: () {
-                    print(titleController.text);
-                    print(bodyController.text);
-                  },
-                  child: Text('Save', style: TextStyle(color: Colors.grey[300])),
                   color: Colors.grey[900],
+                  onPressed: onSave,
+                  child: Text('Save', style: TextStyle(color: Colors.grey[300])),
                 ),
                 const SizedBox(width: 5),
                 MaterialButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text('Cancel', style: TextStyle(color: Colors.grey[300])),
                   color: Colors.grey[900],
+                  onPressed: onCancel,
+                  child: Text('Cancel', style: TextStyle(color: Colors.grey[300])),
                 ),
               ],
             )
