@@ -74,7 +74,7 @@ class _CharPageState extends State<CharPage> {
       'title': _titleController.text,
       'body': _bodyController.text,
       'type': "none",
-      'index': notes.length,
+      'index': notes[notes.length - 1]['index'] + 1,
     }).then((value) {
       setState(() {
         notes.add({
@@ -83,7 +83,7 @@ class _CharPageState extends State<CharPage> {
           'title': _titleController.text,
           'body': _bodyController.text,
           'type': "none",
-          'index': notes.length,
+          'index': notes[notes.length - 1]['index'] + 1,
         });
         docIds.add(value.id);
         setLocalnotes();
