@@ -33,6 +33,9 @@ class _CharPageState extends State<CharPage> {
     });
     QuerySnapshot querySnapshot = await firestore.collection('notes').where("char", isEqualTo: widget.char).get();
     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+    docIds = querySnapshot.docs.map((doc) => doc.id).toList();
+
+    print(docIds);
     if (allData.isNotEmpty) {
       notes = [];
       allData.forEach((data) {
@@ -40,6 +43,7 @@ class _CharPageState extends State<CharPage> {
           notes.add(data as Map<dynamic, dynamic>);
         });
       });
+      print(notes);
       setState(() {
         isLoading = false;
       });
@@ -81,10 +85,26 @@ class _CharPageState extends State<CharPage> {
           'body': _bodyController.text,
           'type': "none",
         });
+        docIds.add(value.id);
         setLocalnotes();
       });
       Navigator.pop(context);
     }).catchError((e) => print(e));
+  }
+
+  void deleteNoteByIndex(index) async {
+    print(docIds[index]);
+    print(notes[index]);
+    await firestore.collection('notes').doc(docIds[index]).delete().then(
+      (doc) {
+        setState(() {
+          notes.remove(notes[index]);
+          docIds.remove(docIds[index]);
+        });
+        setLocalnotes();
+      },
+      onError: (e) => print("Error updating document $e"),
+    );
   }
 
   void createNewNote() async {
@@ -121,6 +141,12 @@ class _CharPageState extends State<CharPage> {
         title: Text(widget.char.replaceAll('_', ' ').capitalize()),
         centerTitle: true,
         backgroundColor: Colors.grey[900],
+        actions: [
+          IconButton(
+            onPressed: () => {},
+            icon: const Icon(Icons.filter),
+          )
+        ],
       ),
       backgroundColor: Colors.grey[500],
       floatingActionButton: FloatingActionButton.small(
@@ -151,6 +177,9 @@ class _CharPageState extends State<CharPage> {
                     title: notes[index]['title'],
                     body: notes[index]['body'],
                     char: notes[index]['char'],
+                    onSlideDelete: () {
+                      deleteNoteByIndex(index);
+                    },
                   );
                 },
               ),

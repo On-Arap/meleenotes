@@ -9,6 +9,7 @@ class HomePage extends StatelessWidget {
   final user = FirebaseAuth.instance.currentUser!;
   final LocalStorage storage = LocalStorage('melee_notes');
   final chars = [
+    'smash',
     'fox',
     'marth',
     'jigglypuff',
