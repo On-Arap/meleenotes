@@ -31,11 +31,10 @@ class _CharPageState extends State<CharPage> {
     setState(() {
       isLoading = true;
     });
-    QuerySnapshot querySnapshot = await firestore.collection('notes').where("char", isEqualTo: widget.char).get();
+    QuerySnapshot querySnapshot = await firestore.collection('notes').where("char", isEqualTo: widget.char).orderBy('index').get();
     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
     docIds = querySnapshot.docs.map((doc) => doc.id).toList();
 
-    print(docIds);
     if (allData.isNotEmpty) {
       notes = [];
       allData.forEach((data) {
@@ -43,7 +42,6 @@ class _CharPageState extends State<CharPage> {
           notes.add(data as Map<dynamic, dynamic>);
         });
       });
-      print(notes);
       setState(() {
         isLoading = false;
       });
@@ -76,6 +74,7 @@ class _CharPageState extends State<CharPage> {
       'title': _titleController.text,
       'body': _bodyController.text,
       'type': "none",
+      'index': notes.length,
     }).then((value) {
       setState(() {
         notes.add({
@@ -84,6 +83,7 @@ class _CharPageState extends State<CharPage> {
           'title': _titleController.text,
           'body': _bodyController.text,
           'type': "none",
+          'index': notes.length,
         });
         docIds.add(value.id);
         setLocalnotes();
@@ -93,13 +93,16 @@ class _CharPageState extends State<CharPage> {
   }
 
   void deleteNoteByIndex(index) async {
-    print(docIds[index]);
-    print(notes[index]);
     await firestore.collection('notes').doc(docIds[index]).delete().then(
       (doc) {
         setState(() {
           notes.remove(notes[index]);
           docIds.remove(docIds[index]);
+          notes.forEach((note) {
+            if (note['index'] > index) {
+              note['index'] -= 1;
+            }
+          });
         });
         setLocalnotes();
       },
@@ -125,7 +128,7 @@ class _CharPageState extends State<CharPage> {
 
   @override
   void initState() {
-    getLocalNotes();
+    //getLocalNotes();
     getDatabaseNotes().then((value) {
       if (notes.isNotEmpty) {
         setLocalnotes();
