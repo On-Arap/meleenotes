@@ -24,9 +24,13 @@ class _CharPageState extends State<CharPage> {
   final _titleController = TextEditingController();
   final _bodyController = TextEditingController();
   final user = FirebaseAuth.instance.currentUser!;
+  bool isLoading = false;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Future getDatabaseNotes() async {
+    setState(() {
+      isLoading = true;
+    });
     QuerySnapshot querySnapshot = await firestore.collection('notes').where("char", isEqualTo: widget.char).get();
     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
     if (allData.isNotEmpty) {
@@ -35,6 +39,13 @@ class _CharPageState extends State<CharPage> {
         setState(() {
           notes.add(data as Map<dynamic, dynamic>);
         });
+      });
+      setState(() {
+        isLoading = false;
+      });
+    } else {
+      setState(() {
+        isLoading = false;
       });
     }
   }
@@ -120,18 +131,31 @@ class _CharPageState extends State<CharPage> {
         child: const Icon(Icons.add),
       ),
       body: Center(
-        child: ListView.builder(
-          shrinkWrap: false,
-          physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
-          padding: const EdgeInsets.only(top: 10, bottom: 20),
-          itemCount: notes.length,
-          itemBuilder: (context, index) {
-            return NoteTile(
-              title: notes[index]['title'],
-              body: notes[index]['body'],
-              char: notes[index]['char'],
-            );
-          },
+        child: Column(
+          children: [
+            isLoading
+                ? LinearProgressIndicator(
+                    backgroundColor: Colors.grey[600],
+                    color: Colors.grey[800],
+                    minHeight: 3,
+                  )
+                : const SizedBox(height: 3),
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: false,
+                physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+                padding: const EdgeInsets.only(top: 10, bottom: 20),
+                itemCount: notes.length,
+                itemBuilder: (context, index) {
+                  return NoteTile(
+                    title: notes[index]['title'],
+                    body: notes[index]['body'],
+                    char: notes[index]['char'],
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
