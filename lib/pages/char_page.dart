@@ -74,7 +74,7 @@ class _CharPageState extends State<CharPage> {
       'title': _titleController.text,
       'body': _bodyController.text,
       'type': "none",
-      'index': notes[notes.length - 1]['index'] + 1,
+      'index': notes.isNotEmpty ? notes[notes.length - 1]['index'] + 1 : 0,
     }).then((value) {
       setState(() {
         notes.add({
@@ -83,7 +83,7 @@ class _CharPageState extends State<CharPage> {
           'title': _titleController.text,
           'body': _bodyController.text,
           'type': "none",
-          'index': notes[notes.length - 1]['index'] + 1,
+          'index': notes.isNotEmpty ? notes[notes.length - 1]['index'] + 1 : 0,
         });
         docIds.add(value.id);
         setLocalnotes();
@@ -179,7 +179,7 @@ class _CharPageState extends State<CharPage> {
                   return NoteTile(
                     title: notes[index]['title'],
                     body: notes[index]['body'],
-                    char: notes[index]['char'],
+                    index: notes[index]['index'],
                     onSlideDelete: () {
                       deleteNoteByIndex(index);
                     },

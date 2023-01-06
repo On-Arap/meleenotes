@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class NoteTile extends StatelessWidget {
   final String title;
   final String body;
-  final String char;
+  final int index;
   final Function() onSlideDelete;
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -16,7 +16,7 @@ class NoteTile extends StatelessWidget {
     super.key,
     required this.title,
     required this.body,
-    required this.char,
+    required this.index,
     required this.onSlideDelete,
   });
 
@@ -73,7 +73,7 @@ class NoteTile extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    char,
+                    index.toString(),
                     style: TextStyle(
                       color: Colors.grey[300],
                       fontSize: 20,
