@@ -216,31 +216,34 @@ class _CharPageState extends State<CharPage> {
         child: const Icon(Icons.add),
       ),
       body: Center(
-        child: ReorderableListView(
-          header: isLoading
-              ? LinearProgressIndicator(
-                  backgroundColor: Colors.grey[600],
-                  color: Colors.grey[800],
-                  minHeight: 3,
-                )
-              : const SizedBox(height: 3),
-          onReorder: (int oldIndex, int newIndex) {
-            reorderNote(oldIndex, newIndex);
-          },
-          children: <Widget>[
-            for (int index = 0; index < notes.length; index += 1)
-              NoteTile(
-                  key: Key('$index'),
-                  title: notes[index]['title'],
-                  body: notes[index]['body'],
-                  index: notes[index]['index'],
-                  onSlideDelete: () {
-                    deleteNoteByIndex(index);
-                  },
-                  onTapUpdate: () {
-                    updateNoteByIndex(index);
-                  }),
-          ],
+        child: Theme(
+          data: ThemeData(canvasColor: Colors.transparent),
+          child: ReorderableListView(
+            header: isLoading
+                ? LinearProgressIndicator(
+                    backgroundColor: Colors.grey[600],
+                    color: Colors.grey[800],
+                    minHeight: 3,
+                  )
+                : const SizedBox(height: 3),
+            onReorder: (int oldIndex, int newIndex) {
+              reorderNote(oldIndex, newIndex);
+            },
+            children: <Widget>[
+              for (int index = 0; index < notes.length; index += 1)
+                NoteTile(
+                    key: Key('$index'),
+                    title: notes[index]['title'],
+                    body: notes[index]['body'],
+                    index: notes[index]['index'],
+                    onSlideDelete: () {
+                      deleteNoteByIndex(index);
+                    },
+                    onTapUpdate: () {
+                      updateNoteByIndex(index);
+                    }),
+            ],
+          ),
         ),
       ),
     );
