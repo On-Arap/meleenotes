@@ -25,7 +25,16 @@ class AddNoteDialog extends StatefulWidget {
 }
 
 class _AddNoteDialogState extends State<AddNoteDialog> {
-  List<bool> selected = [true, false, false, false, false, false, false];
+  List<bool> selected = [];
+
+  @override
+  void initState() {
+    selected = List<bool>.generate(colorList.length, (int index) {
+      return colorList[index]['name'] == widget.typeController.text ? true : false;
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

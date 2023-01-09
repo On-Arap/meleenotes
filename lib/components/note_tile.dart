@@ -87,6 +87,9 @@ class NoteTile extends StatelessWidget {
                       size: 16,
                     ),
                   ),
+                  const SizedBox(
+                    width: 10,
+                  ),
                   GestureDetector(
                     onTap: onSlideDelete,
                     child: Icon(

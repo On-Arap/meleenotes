@@ -133,11 +133,12 @@ class _CharPageState extends State<CharPage> {
   }
 
   void updateTask(index) async {
-    await firestore.collection('notes').doc(docIds[index]).update({'title': _titleController.text, 'body': _bodyController.text}).then(
+    await firestore.collection('notes').doc(docIds[index]).update({'title': _titleController.text, 'body': _bodyController.text, 'type': _typeController.text}).then(
       (value) {
         setState(() {
           notes[index]['title'] = _titleController.text;
           notes[index]['body'] = _bodyController.text;
+          notes[index]['type'] = _typeController.text;
         });
         setLocalnotes();
         Navigator.pop(context);
