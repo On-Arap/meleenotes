@@ -67,6 +67,40 @@ class _CharPageState extends State<CharPage> {
     widget.local.setItem(widget.char, notes);
   }
 
+  void createNewNote() async {
+    _titleController.text = '';
+    _bodyController.text = '';
+
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AddNoteDialog(
+            titleController: _titleController,
+            bodyController: _bodyController,
+            onSave: saveNewTask,
+            onCancel: () => Navigator.pop(context),
+          );
+        });
+  }
+
+  void updateNoteByIndex(index) async {
+    _titleController.text = notes[index]['title'];
+    _bodyController.text = notes[index]['body'];
+
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AddNoteDialog(
+            titleController: _titleController,
+            bodyController: _bodyController,
+            onSave: () {
+              updateTask(index);
+            },
+            onCancel: () => Navigator.pop(context),
+          );
+        });
+  }
+
   void saveNewTask() async {
     await firestore.collection('notes').add({
       'userId': "j27Sp92Tu3cTJkvtf6U17INUUm23",
@@ -92,6 +126,20 @@ class _CharPageState extends State<CharPage> {
     }).catchError((e) => print(e));
   }
 
+  void updateTask(index) async {
+    await firestore.collection('notes').doc(docIds[index]).update({'title': _titleController.text, 'body': _bodyController.text}).then(
+      (value) {
+        setState(() {
+          notes[index]['title'] = _titleController.text;
+          notes[index]['body'] = _bodyController.text;
+        });
+        setLocalnotes();
+        Navigator.pop(context);
+      },
+      onError: (e) => print("Error updating document $e"),
+    );
+  }
+
   void deleteNoteByIndex(index) async {
     await firestore.collection('notes').doc(docIds[index]).delete().then(
       (doc) {
@@ -108,22 +156,6 @@ class _CharPageState extends State<CharPage> {
       },
       onError: (e) => print("Error updating document $e"),
     );
-  }
-
-  void createNewNote() async {
-    _titleController.text = '';
-    _bodyController.text = '';
-
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AddNoteDialog(
-            titleController: _titleController,
-            bodyController: _bodyController,
-            onSave: saveNewTask,
-            onCancel: () => Navigator.pop(context),
-          );
-        });
   }
 
   @override
@@ -177,13 +209,15 @@ class _CharPageState extends State<CharPage> {
                 itemCount: notes.length,
                 itemBuilder: (context, index) {
                   return NoteTile(
-                    title: notes[index]['title'],
-                    body: notes[index]['body'],
-                    index: notes[index]['index'],
-                    onSlideDelete: () {
-                      deleteNoteByIndex(index);
-                    },
-                  );
+                      title: notes[index]['title'],
+                      body: notes[index]['body'],
+                      index: notes[index]['index'],
+                      onSlideDelete: () {
+                        deleteNoteByIndex(index);
+                      },
+                      onLongPressUpdate: () {
+                        updateNoteByIndex(index);
+                      });
                 },
               ),
             ),
