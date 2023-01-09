@@ -23,6 +23,7 @@ class _CharPageState extends State<CharPage> {
 
   final _titleController = TextEditingController();
   final _bodyController = TextEditingController();
+  final ScrollController reorderScrollController = ScrollController();
   final user = FirebaseAuth.instance.currentUser!;
   bool isLoading = false;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -140,6 +141,29 @@ class _CharPageState extends State<CharPage> {
     );
   }
 
+  void reorderNote(int oldIndex, int newIndex) async {
+    setState(() {
+      if (oldIndex < newIndex) {
+        newIndex -= 1;
+      }
+      final note = notes.removeAt(oldIndex);
+      final doc = docIds.removeAt(oldIndex);
+      notes.insert(newIndex, note);
+      docIds.insert(newIndex, doc);
+
+      for (var i = newIndex; i < notes.length; i++) {
+        if (i > 0) {
+          notes[i]['index'] = notes[i - 1]['index'] + 1;
+        }
+      }
+    });
+
+    for (var j = newIndex; j < notes.length; j++) {
+      await firestore.collection('notes').doc(docIds[j]).update({'index': notes[j]['index']});
+    }
+    setLocalnotes();
+  }
+
   void deleteNoteByIndex(index) async {
     await firestore.collection('notes').doc(docIds[index]).delete().then(
       (doc) {
@@ -192,35 +216,30 @@ class _CharPageState extends State<CharPage> {
         child: const Icon(Icons.add),
       ),
       body: Center(
-        child: Column(
-          children: [
-            isLoading
-                ? LinearProgressIndicator(
-                    backgroundColor: Colors.grey[600],
-                    color: Colors.grey[800],
-                    minHeight: 3,
-                  )
-                : const SizedBox(height: 3),
-            Expanded(
-              child: ListView.builder(
-                shrinkWrap: false,
-                physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
-                padding: const EdgeInsets.only(top: 10, bottom: 20),
-                itemCount: notes.length,
-                itemBuilder: (context, index) {
-                  return NoteTile(
-                      title: notes[index]['title'],
-                      body: notes[index]['body'],
-                      index: notes[index]['index'],
-                      onSlideDelete: () {
-                        deleteNoteByIndex(index);
-                      },
-                      onLongPressUpdate: () {
-                        updateNoteByIndex(index);
-                      });
-                },
-              ),
-            ),
+        child: ReorderableListView(
+          header: isLoading
+              ? LinearProgressIndicator(
+                  backgroundColor: Colors.grey[600],
+                  color: Colors.grey[800],
+                  minHeight: 3,
+                )
+              : const SizedBox(height: 3),
+          onReorder: (int oldIndex, int newIndex) {
+            reorderNote(oldIndex, newIndex);
+          },
+          children: <Widget>[
+            for (int index = 0; index < notes.length; index += 1)
+              NoteTile(
+                  key: Key('$index'),
+                  title: notes[index]['title'],
+                  body: notes[index]['body'],
+                  index: notes[index]['index'],
+                  onSlideDelete: () {
+                    deleteNoteByIndex(index);
+                  },
+                  onTapUpdate: () {
+                    updateNoteByIndex(index);
+                  }),
           ],
         ),
       ),
