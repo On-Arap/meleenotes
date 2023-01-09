@@ -11,7 +11,7 @@ class MyAddTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
-      maxLines: multiline ? 10 : 1,
+      maxLines: multiline ? 7 : 1,
       keyboardType: multiline ? TextInputType.multiline : null,
       style: TextStyle(color: Colors.grey.shade300),
       decoration: InputDecoration(

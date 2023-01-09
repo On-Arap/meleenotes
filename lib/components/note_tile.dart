@@ -3,10 +3,12 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:melee_notes/constants/colorsFilter.dart';
 
 class NoteTile extends StatelessWidget {
   final String title;
   final String body;
+  final String type;
   final int index;
   final Function() onSlideDelete;
   final Function() onTapUpdate;
@@ -17,6 +19,7 @@ class NoteTile extends StatelessWidget {
     super.key,
     required this.title,
     required this.body,
+    required this.type,
     required this.index,
     required this.onSlideDelete,
     required this.onTapUpdate,
@@ -48,7 +51,7 @@ class NoteTile extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         decoration: BoxDecoration(
-          color: Colors.grey[800],
+          color: getColor(type),
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(

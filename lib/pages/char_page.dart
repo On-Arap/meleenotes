@@ -23,6 +23,7 @@ class _CharPageState extends State<CharPage> {
 
   final _titleController = TextEditingController();
   final _bodyController = TextEditingController();
+  final _typeController = TextEditingController();
   final ScrollController reorderScrollController = ScrollController();
   final user = FirebaseAuth.instance.currentUser!;
   bool isLoading = false;
@@ -70,6 +71,7 @@ class _CharPageState extends State<CharPage> {
 
   void createNewNote() async {
     _titleController.text = '';
+    _typeController.text = 'grey';
     _bodyController.text = '';
 
     showDialog(
@@ -77,6 +79,7 @@ class _CharPageState extends State<CharPage> {
         builder: (context) {
           return AddNoteDialog(
             titleController: _titleController,
+            typeController: _typeController,
             bodyController: _bodyController,
             onSave: saveNewTask,
             onCancel: () => Navigator.pop(context),
@@ -87,12 +90,14 @@ class _CharPageState extends State<CharPage> {
   void updateNoteByIndex(index) async {
     _titleController.text = notes[index]['title'];
     _bodyController.text = notes[index]['body'];
+    _typeController.text = notes[index]['type'];
 
     showDialog(
         context: context,
         builder: (context) {
           return AddNoteDialog(
             titleController: _titleController,
+            typeController: _typeController,
             bodyController: _bodyController,
             onSave: () {
               updateTask(index);
@@ -108,7 +113,7 @@ class _CharPageState extends State<CharPage> {
       'char': widget.char,
       'title': _titleController.text,
       'body': _bodyController.text,
-      'type': "none",
+      'type': _typeController.text,
       'index': notes.isNotEmpty ? notes[notes.length - 1]['index'] + 1 : 0,
     }).then((value) {
       setState(() {
@@ -117,7 +122,7 @@ class _CharPageState extends State<CharPage> {
           'char': widget.char,
           'title': _titleController.text,
           'body': _bodyController.text,
-          'type': "none",
+          'type': _typeController.text,
           'index': notes.isNotEmpty ? notes[notes.length - 1]['index'] + 1 : 0,
         });
         docIds.add(value.id);
@@ -219,6 +224,7 @@ class _CharPageState extends State<CharPage> {
         child: Theme(
           data: ThemeData(canvasColor: Colors.transparent),
           child: ReorderableListView(
+            physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
             header: isLoading
                 ? LinearProgressIndicator(
                     backgroundColor: Colors.grey[600],
@@ -234,6 +240,7 @@ class _CharPageState extends State<CharPage> {
                 NoteTile(
                     key: Key('$index'),
                     title: notes[index]['title'],
+                    type: notes[index]['type'],
                     body: notes[index]['body'],
                     index: notes[index]['index'],
                     onSlideDelete: () {
