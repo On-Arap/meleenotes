@@ -10,7 +10,7 @@ final List<Map<dynamic, dynamic>> colorList = [
   {'color': Colors.pink[800], 'name': 'pink'},
 ];
 
-Color? getColor(String name) {
+Color? getColorByName(String name) {
   var color = Colors.grey[800];
 
   colorList.forEach((col) {
@@ -19,4 +19,8 @@ Color? getColor(String name) {
     }
   });
   return color;
+}
+
+getColorNames() {
+  return colorList.map((e) => (e['name'].toString())).toList();
 }

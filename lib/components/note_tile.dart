@@ -51,7 +51,7 @@ class NoteTile extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         decoration: BoxDecoration(
-          color: getColor(type),
+          color: getColorByName(type),
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(

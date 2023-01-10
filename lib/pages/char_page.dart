@@ -6,6 +6,8 @@ import 'package:melee_notes/components/add_note_dialog.dart';
 import 'package:melee_notes/components/note_tile.dart';
 import 'package:localstorage/localstorage.dart';
 
+import '../constants/colorsFilter.dart';
+
 class CharPage extends StatefulWidget {
   final String char;
   final LocalStorage local;
@@ -188,6 +190,15 @@ class _CharPageState extends State<CharPage> {
     );
   }
 
+  void handleSelectFilter(String value) {
+    switch (value) {
+      case '':
+        break;
+      case 'Settings':
+        break;
+    }
+  }
+
   @override
   void initState() {
     //getLocalNotes();
@@ -199,18 +210,50 @@ class _CharPageState extends State<CharPage> {
     super.initState();
   }
 
+  var filterList = getColorNames();
+
   @override
   Widget build(BuildContext context) {
+    List<String> listAllFilter = getColorNames();
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.char.replaceAll('_', ' ').capitalize()),
         centerTitle: true,
         backgroundColor: Colors.grey[900],
         actions: [
-          IconButton(
-            onPressed: () => {},
-            icon: const Icon(Icons.filter),
-          )
+          PopupMenuButton<String>(
+            offset: const Offset(0, 50),
+            elevation: 5.0,
+            itemBuilder: (context) {
+              return listAllFilter.map((String filter) {
+                return PopupMenuItem<String>(
+                  child: StatefulBuilder(
+                    builder: (_context, _setState) => CheckboxListTile(
+                      title: Text(
+                        filter.capitalize(),
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: getColorByName(filter)),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 30),
+                      value: filterList.contains(filter),
+                      activeColor: getColorByName(filter),
+                      onChanged: (value) {
+                        setState(() {
+                          _setState(() {
+                            if (!value!) {
+                              filterList.remove(filter);
+                            } else {
+                              filterList.add(filter);
+                            }
+                          });
+                        });
+                      },
+                    ),
+                  ),
+                );
+              }).toList();
+            },
+          ),
         ],
       ),
       backgroundColor: Colors.grey[500],
@@ -238,18 +281,19 @@ class _CharPageState extends State<CharPage> {
             },
             children: <Widget>[
               for (int index = 0; index < notes.length; index += 1)
-                NoteTile(
-                    key: Key('$index'),
-                    title: notes[index]['title'],
-                    type: notes[index]['type'],
-                    body: notes[index]['body'],
-                    index: notes[index]['index'],
-                    onSlideDelete: () {
-                      deleteNoteByIndex(index);
-                    },
-                    onTapUpdate: () {
-                      updateNoteByIndex(index);
-                    }),
+                if (filterList.contains(notes[index]['type']))
+                  NoteTile(
+                      key: Key('$index'),
+                      title: notes[index]['title'],
+                      type: notes[index]['type'],
+                      body: notes[index]['body'],
+                      index: notes[index]['index'],
+                      onSlideDelete: () {
+                        deleteNoteByIndex(index);
+                      },
+                      onTapUpdate: () {
+                        updateNoteByIndex(index);
+                      }),
             ],
           ),
         ),
