@@ -67,8 +67,8 @@ class _CharPageState extends State<CharPage> {
     });
   }
 
-  setLocalnotes() {
-    widget.local.setItem(widget.char, notes);
+  setLocalnotes() async {
+    await widget.local.setItem(widget.char, notes);
   }
 
   void createNewNote() async {
@@ -131,7 +131,23 @@ class _CharPageState extends State<CharPage> {
         setLocalnotes();
       });
       Navigator.pop(context);
-    }).catchError((e) => print(e));
+    }).catchError((e) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text(e),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Ok'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          });
+    });
   }
 
   void updateTask(index) async {
