@@ -7,6 +7,7 @@ class HomePage extends StatelessWidget {
   HomePage({super.key});
 
   final user = FirebaseAuth.instance.currentUser!;
+  bool isLoading = false;
   final LocalStorage storage = LocalStorage('melee_notes');
   final chars = [
     'smash',
@@ -57,52 +58,65 @@ class HomePage extends StatelessWidget {
         ],
       ),
       backgroundColor: Colors.grey[500],
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10.0),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Center(
-                  child: GridView.count(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 5,
-                    mainAxisSpacing: 5,
-                    childAspectRatio: 1,
-                    physics: const AlwaysScrollableScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                    children: List.generate(
-                      chars.length,
-                      (index) {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) {
-                              return CharPage(char: chars[index], local: storage);
-                            }));
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.grey[800],
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Image.asset(
-                                'lib/images/charsAnimelee/${chars[index]}.png',
-                                fit: BoxFit.fitWidth,
-                              ),
-                            ),
+      body: Column(
+        children: [
+          true
+              ? LinearProgressIndicator(
+                  backgroundColor: Colors.grey[600],
+                  color: Colors.grey[800],
+                  minHeight: 3,
+                )
+              : const SizedBox(height: 3),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Center(
+                        child: GridView.count(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 5,
+                          mainAxisSpacing: 5,
+                          childAspectRatio: 1,
+                          physics: const AlwaysScrollableScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                          children: List.generate(
+                            chars.length,
+                            (index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                    return CharPage(char: chars[index], local: storage);
+                                  }));
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[800],
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Image.asset(
+                                      'lib/images/charsAnimelee/${chars[index]}.png',
+                                      fit: BoxFit.fitWidth,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
                           ),
-                        );
-                      },
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
