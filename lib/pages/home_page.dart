@@ -1,14 +1,24 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'char_page.dart';
 import 'package:localstorage/localstorage.dart';
+import 'package:badges/badges.dart' as badge;
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final user = FirebaseAuth.instance.currentUser!;
-  bool isLoading = false;
   final LocalStorage storage = LocalStorage('melee_notes');
+
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  bool isLoading = false;
+  List<int> cntNotes = [];
   final chars = [
     'smash',
     'fox',
@@ -43,6 +53,29 @@ class HomePage extends StatelessWidget {
     FirebaseAuth.instance.signOut();
   }
 
+  void loadNumberofNotes() async {
+    cntNotes = [];
+    setState(() {
+      isLoading = true;
+    });
+
+    for (var i = 0; i < chars.length; i++) {
+      QuerySnapshot querySnapshot = await firestore.collection('notes').where("char", isEqualTo: chars[i]).get();
+      cntNotes.add(querySnapshot.docs.length);
+    }
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    loadNumberofNotes();
+    super.initState();
+  }
+
+  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +93,7 @@ class HomePage extends StatelessWidget {
       backgroundColor: Colors.grey[500],
       body: Column(
         children: [
-          true
+          isLoading
               ? LinearProgressIndicator(
                   backgroundColor: Colors.grey[600],
                   color: Colors.grey[800],
@@ -90,18 +123,28 @@ class HomePage extends StatelessWidget {
                                 onTap: () {
                                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                                     return CharPage(char: chars[index], local: storage);
-                                  }));
+                                  })).whenComplete(() => loadNumberofNotes());
                                 },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[800],
-                                    borderRadius: BorderRadius.circular(8),
+                                child: badge.Badge(
+                                  position: badge.BadgePosition.bottomEnd(bottom: -3, end: -3),
+                                  alignment: AlignmentDirectional.bottomEnd,
+                                  showBadge: cntNotes.length > index && cntNotes[index] > 0,
+                                  badgeColor: Colors.grey.shade900,
+                                  badgeContent: Text(
+                                    (cntNotes.length > index && cntNotes[index] > 0) ? cntNotes[index].toString() : "0",
+                                    style: TextStyle(fontSize: 20, color: Colors.grey, fontWeight: FontWeight.bold),
                                   ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Image.asset(
-                                      'lib/images/charsAnimelee/${chars[index]}.png',
-                                      fit: BoxFit.fitWidth,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[800],
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Image.asset(
+                                        'lib/images/charsAnimelee/${chars[index]}.png',
+                                        fit: BoxFit.fitWidth,
+                                      ),
                                     ),
                                   ),
                                 ),
