@@ -125,22 +125,25 @@ class _HomePageState extends State<HomePage> {
                                     return CharPage(char: chars[index], local: storage);
                                   })).whenComplete(() => loadNumberofNotes());
                                 },
-                                child: badge.Badge(
-                                  position: badge.BadgePosition.bottomEnd(bottom: -3, end: -3),
-                                  alignment: AlignmentDirectional.bottomEnd,
-                                  showBadge: cntNotes.length > index && cntNotes[index] > 0,
-                                  badgeColor: Colors.grey.shade900,
-                                  badgeContent: Text(
-                                    (cntNotes.length > index && cntNotes[index] > 0) ? cntNotes[index].toString() : "0",
-                                    style: TextStyle(fontSize: 20, color: Colors.grey, fontWeight: FontWeight.bold),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[800],
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey[800],
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(4.0),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: badge.Badge(
+                                      position: badge.BadgePosition.bottomEnd(bottom: -10, end: -7),
+                                      borderSide: const BorderSide(color: Colors.grey, width: 2),
+                                      padding: const EdgeInsets.all(7),
+                                      elevation: 1,
+                                      alignment: AlignmentDirectional.bottomEnd,
+                                      showBadge: cntNotes.length > index && cntNotes[index] > 0,
+                                      badgeColor: Colors.grey.shade800,
+                                      badgeContent: Text(
+                                        (cntNotes.length > index && cntNotes[index] > 0) ? cntNotes[index].toString() : "0",
+                                        style: const TextStyle(fontSize: 20, color: Colors.grey, fontWeight: FontWeight.bold),
+                                      ),
                                       child: Image.asset(
                                         'lib/images/charsAnimelee/${chars[index]}.png',
                                         fit: BoxFit.fitWidth,
