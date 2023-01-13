@@ -5,8 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:melee_notes/constants/colorsFilter.dart';
 
-class NoteTile extends StatelessWidget {
-  final String title;
+class NoteTile extends ListTile {
+  final String titleNote;
   final String body;
   final String type;
   final int index;
@@ -17,7 +17,7 @@ class NoteTile extends StatelessWidget {
 
   NoteTile({
     super.key,
-    required this.title,
+    required this.titleNote,
     required this.body,
     required this.type,
     required this.index,
@@ -70,7 +70,7 @@ class NoteTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  title,
+                  titleNote,
                   style: TextStyle(
                     color: Colors.grey[100],
                     fontSize: 20,

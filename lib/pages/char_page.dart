@@ -228,6 +228,43 @@ class _CharPageState extends State<CharPage> {
 
   var filterList = getColorNames();
 
+  Widget charPage() {
+    return Center(
+      child: Theme(
+        data: ThemeData(canvasColor: Colors.transparent),
+        child: ReorderableListView(
+          physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+          header: isLoading
+              ? LinearProgressIndicator(
+                  backgroundColor: Colors.grey[600],
+                  color: Colors.grey[800],
+                  minHeight: 3,
+                )
+              : const SizedBox(height: 3),
+          onReorder: (int oldIndex, int newIndex) {
+            reorderNote(oldIndex, newIndex);
+          },
+          children: <Widget>[
+            for (int index = 0; index < notes.length; index += 1)
+              if (filterList.contains(notes[index]['type']))
+                NoteTile(
+                    key: Key('$index'),
+                    titleNote: notes[index]['title'],
+                    type: notes[index]['type'],
+                    body: notes[index]['body'],
+                    index: notes[index]['index'],
+                    onSlideDelete: () {
+                      deleteNoteByIndex(index);
+                    },
+                    onTapUpdate: () {
+                      updateNoteByIndex(index);
+                    }),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     List<String> listAllFilter = getColorNames();
@@ -280,39 +317,18 @@ class _CharPageState extends State<CharPage> {
         backgroundColor: Colors.grey[700],
         child: const Icon(Icons.add),
       ),
-      body: Center(
-        child: Theme(
-          data: ThemeData(canvasColor: Colors.transparent),
-          child: ReorderableListView(
-            physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
-            header: isLoading
-                ? LinearProgressIndicator(
-                    backgroundColor: Colors.grey[600],
-                    color: Colors.grey[800],
-                    minHeight: 3,
-                  )
-                : const SizedBox(height: 3),
-            onReorder: (int oldIndex, int newIndex) {
-              reorderNote(oldIndex, newIndex);
-            },
-            children: <Widget>[
-              for (int index = 0; index < notes.length; index += 1)
-                if (filterList.contains(notes[index]['type']))
-                  NoteTile(
-                      key: Key('$index'),
-                      title: notes[index]['title'],
-                      type: notes[index]['type'],
-                      body: notes[index]['body'],
-                      index: notes[index]['index'],
-                      onSlideDelete: () {
-                        deleteNoteByIndex(index);
-                      },
-                      onTapUpdate: () {
-                        updateNoteByIndex(index);
-                      }),
-            ],
-          ),
-        ),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth > 1100) {
+            return Center(
+                child: SizedBox(
+              width: constraints.maxWidth / 2,
+              child: charPage(),
+            ));
+          } else {
+            return charPage();
+          }
+        },
       ),
     );
   }
