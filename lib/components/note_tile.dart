@@ -10,6 +10,7 @@ class NoteTile extends ListTile {
   final String body;
   final String type;
   final int index;
+  final int tileIndex;
   final Function() onSlideDelete;
   final Function() onTapUpdate;
 
@@ -21,6 +22,7 @@ class NoteTile extends ListTile {
     required this.body,
     required this.type,
     required this.index,
+    required this.tileIndex,
     required this.onSlideDelete,
     required this.onTapUpdate,
   });
@@ -84,7 +86,7 @@ class NoteTile extends ListTile {
                       Icons.edit,
                       color: Colors.grey[300],
                       weight: 2,
-                      size: 16,
+                      size: 18,
                     ),
                   ),
                   const SizedBox(
@@ -96,7 +98,19 @@ class NoteTile extends ListTile {
                       Icons.delete,
                       color: Colors.grey[300],
                       weight: 2,
-                      size: 16,
+                      size: 18,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  ReorderableDragStartListener(
+                    index: tileIndex,
+                    child: Icon(
+                      Icons.reorder_rounded,
+                      color: Colors.grey[300],
+                      weight: 2,
+                      size: 18,
                     ),
                   ),
                 ]),

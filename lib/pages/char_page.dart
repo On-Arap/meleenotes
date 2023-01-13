@@ -233,6 +233,7 @@ class _CharPageState extends State<CharPage> {
       child: Theme(
         data: ThemeData(canvasColor: Colors.transparent),
         child: ReorderableListView(
+          buildDefaultDragHandles: false,
           physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
           header: isLoading
               ? LinearProgressIndicator(
@@ -249,6 +250,7 @@ class _CharPageState extends State<CharPage> {
               if (filterList.contains(notes[index]['type']))
                 NoteTile(
                     key: Key('$index'),
+                    tileIndex: index,
                     titleNote: notes[index]['title'],
                     type: notes[index]['type'],
                     body: notes[index]['body'],
@@ -321,8 +323,8 @@ class _CharPageState extends State<CharPage> {
         builder: (context, constraints) {
           if (constraints.maxWidth > 1100) {
             return Center(
-                child: SizedBox(
-              width: constraints.maxWidth / 2,
+                child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: constraints.maxWidth / 4),
               child: charPage(),
             ));
           } else {
