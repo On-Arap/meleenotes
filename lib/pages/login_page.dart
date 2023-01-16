@@ -100,20 +100,25 @@ class _LoginPageState extends State<LoginPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text(
-                        'Forgot password?',
-                        style: TextStyle(color: Colors.grey[600]),
-                      ),
+                      MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        child: Text(
+                          'Forgot password?',
+                          style: TextStyle(color: Colors.grey[600]),
+                        ),
+                      )
                     ],
                   ),
                 ),
                 const SizedBox(height: 25),
-                MyButton(
-                  buttonText: 'Sign In',
-                  onTap: () {
-                    signUserIn();
-                  },
-                ),
+                MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: MyButton(
+                      buttonText: 'Sign In',
+                      onTap: () {
+                        signUserIn();
+                      },
+                    )),
                 const SizedBox(height: 30),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -159,14 +164,17 @@ class _LoginPageState extends State<LoginPage> {
                           color: Colors.grey[600],
                         )),
                     const SizedBox(width: 4),
-                    GestureDetector(
-                      onTap: widget.onTap,
-                      child: const Text('Register now',
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold,
-                          )),
-                    ),
+                    MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: GestureDetector(
+                        onTap: widget.onTap,
+                        child: const Text('Register now',
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontWeight: FontWeight.bold,
+                            )),
+                      ),
+                    )
                   ],
                 )
               ],

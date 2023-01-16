@@ -82,11 +82,14 @@ class NoteTile extends ListTile {
                 Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                   GestureDetector(
                     onTap: onTapUpdate,
-                    child: Icon(
-                      Icons.edit,
-                      color: Colors.grey[300],
-                      weight: 2,
-                      size: 18,
+                    child: MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: Icon(
+                        Icons.edit,
+                        color: Colors.grey[300],
+                        weight: 2,
+                        size: 18,
+                      ),
                     ),
                   ),
                   const SizedBox(
@@ -94,11 +97,14 @@ class NoteTile extends ListTile {
                   ),
                   GestureDetector(
                     onTap: onSlideDelete,
-                    child: Icon(
-                      Icons.delete,
-                      color: Colors.grey[300],
-                      weight: 2,
-                      size: 18,
+                    child: MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: Icon(
+                        Icons.delete,
+                        color: Colors.grey[300],
+                        weight: 2,
+                        size: 18,
+                      ),
                     ),
                   ),
                   const SizedBox(
@@ -106,11 +112,14 @@ class NoteTile extends ListTile {
                   ),
                   ReorderableDragStartListener(
                     index: tileIndex,
-                    child: Icon(
-                      Icons.reorder_rounded,
-                      color: Colors.grey[300],
-                      weight: 2,
-                      size: 18,
+                    child: MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: Icon(
+                        Icons.reorder_rounded,
+                        color: Colors.grey[300],
+                        weight: 2,
+                        size: 18,
+                      ),
                     ),
                   ),
                 ]),

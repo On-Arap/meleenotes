@@ -106,11 +106,14 @@ class _RegisterPageState extends State<RegisterPage> {
                   obscureText: true,
                 ),
                 const SizedBox(height: 25),
-                MyButton(
-                  buttonText: 'Sign Up',
-                  onTap: () {
-                    signUserIn();
-                  },
+                MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: MyButton(
+                    buttonText: 'Sign Up',
+                    onTap: () {
+                      signUserIn();
+                    },
+                  ),
                 ),
                 const SizedBox(height: 30),
                 Padding(
@@ -157,14 +160,17 @@ class _RegisterPageState extends State<RegisterPage> {
                           color: Colors.grey[600],
                         )),
                     const SizedBox(width: 4),
-                    GestureDetector(
-                      onTap: widget.onTap,
-                      child: const Text('Login now',
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold,
-                          )),
-                    ),
+                    MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: GestureDetector(
+                        onTap: widget.onTap,
+                        child: const Text('Login now',
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontWeight: FontWeight.bold,
+                            )),
+                      ),
+                    )
                   ],
                 )
               ],
