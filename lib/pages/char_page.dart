@@ -35,7 +35,7 @@ class _CharPageState extends State<CharPage> {
     setState(() {
       isLoading = true;
     });
-    QuerySnapshot querySnapshot = await firestore.collection('notes').where("char", isEqualTo: widget.char).orderBy('index').get();
+    QuerySnapshot querySnapshot = await firestore.collection('notes').where("userId", isEqualTo: user.uid).where("char", isEqualTo: widget.char).orderBy('index').get();
     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
     docIds = querySnapshot.docs.map((doc) => doc.id).toList();
 
@@ -111,7 +111,7 @@ class _CharPageState extends State<CharPage> {
 
   void saveNewTask() async {
     await firestore.collection('notes').add({
-      'userId': "j27Sp92Tu3cTJkvtf6U17INUUm23",
+      'userId': user.uid,
       'char': widget.char,
       'title': _titleController.text,
       'body': _bodyController.text,
@@ -120,7 +120,7 @@ class _CharPageState extends State<CharPage> {
     }).then((value) {
       setState(() {
         notes.add({
-          'userId': "j27Sp92Tu3cTJkvtf6U17INUUm23",
+          'userId': user.uid,
           'char': widget.char,
           'title': _titleController.text,
           'body': _bodyController.text,

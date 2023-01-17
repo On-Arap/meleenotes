@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
     });
 
     for (var i = 0; i < chars.length; i++) {
-      QuerySnapshot querySnapshot = await firestore.collection('notes').where("char", isEqualTo: chars[i]).get();
+      QuerySnapshot querySnapshot = await firestore.collection('notes').where("userId", isEqualTo: user.uid).where("char", isEqualTo: chars[i]).get();
       cntNotes.add(querySnapshot.docs.length);
     }
 
