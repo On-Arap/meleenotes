@@ -58,12 +58,14 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       isLoading = true;
     });
+    QuerySnapshot querySnapshot = await firestore.collection('notes').where("userId", isEqualTo: user.uid).get();
+    final allData = querySnapshot.docs.map((doc) => doc.data() as Map<dynamic, dynamic>).toList();
 
-    for (var i = 0; i < chars.length; i++) {
-      QuerySnapshot querySnapshot = await firestore.collection('notes').where("userId", isEqualTo: user.uid).where("char", isEqualTo: chars[i]).get();
-      cntNotes.add(querySnapshot.docs.length);
+    if (allData.isNotEmpty) {
+      for (var i = 0; i < chars.length; i++) {
+        cntNotes.add(allData.where((notes) => notes["char"] == chars[i]).length);
+      }
     }
-
     setState(() {
       isLoading = false;
     });
