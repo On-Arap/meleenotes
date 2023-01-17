@@ -58,15 +58,12 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       isLoading = true;
     });
-<<<<<<< HEAD
 
     print("get number of notes");
     print(user.uid);
 
     QuerySnapshot querySnapshot = await firestore.collection('notes').where("userId", isEqualTo: user.uid).get();
     final allData = querySnapshot.docs.map((doc) => doc.data() as Map<dynamic, dynamic>).toList();
-=======
->>>>>>> parent of c6b7c29 (improve load cntNotes on HomePage)
 
     for (var i = 0; i < chars.length; i++) {
       QuerySnapshot querySnapshot = await firestore.collection('notes').where("userId", isEqualTo: user.uid).where("char", isEqualTo: chars[i]).get();
