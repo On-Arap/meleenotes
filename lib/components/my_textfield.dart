@@ -14,7 +14,6 @@ class MyTextField extends StatelessWidget {
       child: TextField(
         controller: controller,
         obscureText: obscureText,
-        autofillHints: hintText == 'email' ? [AutofillHints.email] : [AutofillHints.password],
         style: TextStyle(color: Colors.grey.shade300),
         decoration: InputDecoration(
           enabledBorder: const OutlineInputBorder(
