@@ -86,7 +86,7 @@ class _HomePageState extends State<HomePage> {
       children: [
         isLoading
             ? LinearProgressIndicator(
-                backgroundColor: Colors.grey[600],
+                backgroundColor: Colors.red[600],
                 color: Colors.grey[800],
                 minHeight: 3,
               )
