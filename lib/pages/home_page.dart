@@ -58,6 +58,10 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       isLoading = true;
     });
+
+    print("get number of notes");
+    print(user.uid);
+
     QuerySnapshot querySnapshot = await firestore.collection('notes').where("userId", isEqualTo: user.uid).get();
     final allData = querySnapshot.docs.map((doc) => doc.data() as Map<dynamic, dynamic>).toList();
 

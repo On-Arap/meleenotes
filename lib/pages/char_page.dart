@@ -35,6 +35,9 @@ class _CharPageState extends State<CharPage> {
     setState(() {
       isLoading = true;
     });
+
+    print("get notes");
+    print(user.uid);
     QuerySnapshot querySnapshot = await firestore.collection('notes').where("userId", isEqualTo: user.uid).where("char", isEqualTo: widget.char).orderBy('index').get();
     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
     docIds = querySnapshot.docs.map((doc) => doc.id).toList();
