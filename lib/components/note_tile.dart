@@ -54,7 +54,7 @@ class NoteTile extends ListTile {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         decoration: BoxDecoration(
           color: getColorByName(type),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(3),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.shade600,
