@@ -43,6 +43,8 @@ class _LoginPageState extends State<LoginPage> {
         errorMessage('Incorrect Email');
       } else if (e.code == 'wrong-password') {
         errorMessage('Incorrect password');
+      } else {
+        errorMessage(e.message!);
       }
     }
   }

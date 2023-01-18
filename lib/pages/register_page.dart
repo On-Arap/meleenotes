@@ -48,6 +48,8 @@ class _RegisterPageState extends State<RegisterPage> {
         errorMessage('Incorrect Email');
       } else if (e.code == 'wrong-password') {
         errorMessage('Incorrect password');
+      } else {
+        errorMessage(e.message!);
       }
     }
   }
